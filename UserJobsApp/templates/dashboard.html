@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+	<link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> 
+</head>
+<body>
+    <div class = 'main'>
+        <div class = 'header'>
+            <div class = "greet"><h1>Welcome, {{User.first_name}} {{User.last_name}}</h1></div>
+            <div id = "navigation">
+                <a href = '/log_out'>Logout</a>
+                <form action="/Jobs/New">
+                    <button type="submit">New Job</button>
+                </form>
+            </div>
+        </div>
+        <div class = 'table'>
+            <div class = tableHeader>Everyone's Jobs</div>
+            <table>
+                <tr>
+                    <th>Job</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+
+                {% for job in all_jobs %}
+
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>
+                        <a href = '/Jobs/View/{{job.id}}'>View</a>
+                        <a href = '/Jobs/Assign/{{job.id}}'>Add</href>
+                        {% if job.created_by.id == User.id %}
+                            <a href = '/Jobs/Edit/{{job.id}}'>Edit</a>
+                            <a href = '/Jobs/Remove/{{job.id}}'>Remove</a>
+                        {%endif%}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class = 'table'>
+                <div class = tableHeader>{{User.first_name}}'s Jobs</div>
+                <table>
+                    <tr>
+                        <th>Job</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for job in User.jobs_assigned.all %}
+                    <tr>
+                        <td>{{ job.title }}</td>
+                        <td>
+                            <a href = '/Jobs/View/{{job.id}}'>View</a>
+                            <a href = '/Jobs/Remove/{{job.id}}'>Done</a>
+                            <a href = '/Jobs/Unassign/{{job.id}}'>Give Up</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>   
+        </div>
+    </div>
+</body>
+</html>

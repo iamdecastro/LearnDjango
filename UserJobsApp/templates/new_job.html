@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+	<link rel="stylesheet" href="{% static 'css/new_job.css' %}"> 
+</head>
+<body>
+    <div id = 'main'>
+        <div class = header>
+            <div class = "greet">
+                <h1>Hello, {{User.first_name}}! Create a Job! </h1>
+            </div>
+            <div class = navigation>                
+                <a href = '/log_out'>Logout</a>
+            </div>
+        </div>
+        
+        <div id = "Form">
+            {% if messages %}
+            <ul class="messages">    
+                {% for message in messages %}    
+                    <li class = 'error' {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+            <form id = 'NewJobForm'action = '/Jobs/Create' method = 'POST'>
+                <div class = 'content'>
+                    {% csrf_token %}
+                    <div class = 'labels'>
+                        <label>Title:</label>
+                        <label>Description:</label>
+                        <label>Location:</label>
+                        <label>Categories:</label>
+                        <label>Other:</label>            
+                    </div>
+                    <div class = 'input'>
+                        <input type = 'text' name = 'title'>
+                        <input type = 'text' name = 'desc'>
+                        <input type = 'text' name = 'location'>
+                        {% for category in Categories %}    
+                            
+                            <input type="hidden" name="{{category.id}}" value="False">
+                            <input type="checkbox" name="{{category.id}}" value="True"> {{category.category}}
+                        {% endfor %}
+                        <input type = 'text' name = 'other'>
+                    </div>
+                </div>
+                    
+                <div class = 'footer'>
+                    
+                        <button type = 'submit' form = 'cancel'>Cancel</button>
+                    
+                    <button type = 'submit' form = 'NewJobForm'>Submit</button>
+                </div>
+            </form> 
+        </div>
+    </div>
+    <form id = 'cancel' action = '/dashboard'>
+    </form>
+</body>
+</html>

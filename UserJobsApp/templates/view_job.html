@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+	<link rel="stylesheet" href="{% static 'css/view_job.css' %}"> 
+</head>
+<body>
+    <div id = 'main'>
+        <div class = header>
+            <div class = "greet">
+                <h1>Hello, {{User.first_name}}! These are the Job Details! </h1>
+            </div>
+            <div class = navigation>
+                <a href = '/dashboard'>dashboard</a>                
+                <a href = '/log_out'>Logout</a>
+            </div>
+        </div>
+        <div id = "Content">
+            <div id = "contentHeader"> {{Job.title}}</div>
+            <div id = "contentBody">
+                <p>{{Job.desc}}</p>
+                <p>Location: {{Job.location}}</p>
+                <p>Posted By:{{Job.created_by.first_name}}</p>
+                <p>Posted On:{{Job.created_at}}</p>
+                <p>
+                    Categories:
+                    {% for cat in categories %}
+                        {{cat.category}}
+                    {% endfor %}
+
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id = footer>
+        {% if Job.assigned_to.id != User.id %}
+        <a href = "/Jobs/Assign/{{Job.id}}">Add to my jobs</a>
+        {% endif %}
+        
+    </div>
+</body>
+</html>
